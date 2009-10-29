@@ -8,7 +8,7 @@ require 'soap/rpc/driver'
 module Postal
   module Lmapi
     class Soap < ::SOAP::RPC::Driver
-      DefaultEndpointUrl = "http://mail.active.com:82/"
+      DefaultEndpointUrl = "http://www.mymailserver.com/"
       NsLmapi = "http://www.lyris.com/lmapi"
 
       Methods = [

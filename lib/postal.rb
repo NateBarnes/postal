@@ -35,7 +35,7 @@ module Postal
   # Make a driver instance available at Postal.driver
   def driver
     unless @driver
-      @driver = Postal::Lmapi::Soap.new
+      @driver = Postal::Lmapi::Soap.new(@options[:wsdl])
       @driver.options['protocol.http.basic_auth'] << [@options[:wsdl], @options[:username], @options[:password]]
     end
     return @driver
