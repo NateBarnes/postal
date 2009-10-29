@@ -20,7 +20,7 @@ module Postal
   class CouldNotSendMailing < StandardError; end;
   class WouldDeleteAllMembers < StandardError; end;
   
-  VERSION = '0.1.0'
+  VERSION = '0.1.5'
   LOGGER = Logger.new(STDOUT)
   
   DEFAULT_OPTIONS = { :debug => false }
