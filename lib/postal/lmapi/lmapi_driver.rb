@@ -655,7 +655,7 @@ module Postal
         ]
       ]
 
-      def initialize(endpoint_url = nil)
+      def initialize(endpoint_url = nil, proxy = nil)
         endpoint_url ||= DefaultEndpointUrl
         super(endpoint_url, nil)
         self.mapping_registry = MappingRegistry::EncodedRegistry

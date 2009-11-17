@@ -8,6 +8,7 @@ require 'postal/lmapi/lmapi.rb'
 require 'postal/lmapi/lmapi_driver.rb'
 require 'postal/lmapi/lmapi_mapping_registry.rb'
 require 'postal/base'
+require 'postal/content'
 require 'postal/list'
 require 'postal/member'
 require 'postal/mailing'
@@ -27,7 +28,8 @@ module Postal
   
   @options = {  :wsdl => nil, 
                 :username => nil, 
-                :password => nil }
+                :password => nil,
+                :proxy => nil }
   @driver = nil
   
   attr_accessor :options
@@ -37,6 +39,7 @@ module Postal
     unless @driver
       @driver = Postal::Lmapi::Soap.new(@options[:wsdl])
       @driver.options['protocol.http.basic_auth'] << [@options[:wsdl], @options[:username], @options[:password]]
+      @driver.options['protocol.http.proxy'] = @options[:proxy]
     end
     return @driver
   end
