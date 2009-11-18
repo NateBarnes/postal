@@ -48,6 +48,16 @@ module Postal
         @from = from
         @additionalHeaders = additionalHeaders
       end
+      
+      # This lets us initialize a new MailingStruct by passing in a SimpleMailingStruct
+      # mail = Postal::Lmapi::MailingStruct.new(content)
+      def [](method)
+        begin
+          self.send(method)
+        rescue
+          return nil
+        end
+      end
     end
 
     # {http://tempuri.org/ns1.xsd}MessageStruct

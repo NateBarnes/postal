@@ -6,6 +6,7 @@ class MailingTest < Test::Unit::TestCase
 
   def setup
     load_config
+    Postal.options[:proxy] = "http://localhost:8888/"
   end
   
   def test_can_send_valid_mailing
@@ -49,12 +50,32 @@ class MailingTest < Test::Unit::TestCase
   end
   
   def test_cannot_send_invalid_mailing
-    mail = Postal::Mailing.new( :to => @config['valid_email'], 
+    mail = Postal::Mailing.new( :to => @config['email_in_list'], 
                                 :html_message => "<p>Test from Postal at #{Time.now.to_s}</p>", 
                                 :from => @config['from'] )
     assert !mail.valid?
     assert !mail.send
     assert_raises(Postal::CouldNotSendMailing) { mail.send! }
+  end
+  
+  def test_can_import_content
+    assert mail = Postal::Mailing.import(@config['content_id'])
+    assert mail.title = @config['content_title']
+  end
+  
+  def test_can_send_mailing_from_import
+    content = Postal::Mailing.import(@config['content_id'])
+    # this simple call SHOULD work
+    mailing = Postal::Mailing.new(:to => @config['email_in_list'],
+                                  :mailing => content)
+    #puts content.title
+    #mailing = Postal::Mailing.new(:to => @config['email_in_list'],
+    #                              :html_message => content.htmlMessage,
+    #                              :subject => content.subject,
+    #                              :from => content.from)
+    puts mailing.to
+    assert mailing.valid?
+    assert mailing.send!
   end
   
 end

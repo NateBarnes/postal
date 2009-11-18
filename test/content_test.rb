@@ -6,7 +6,8 @@ class ContentTest < Test::Unit::TestCase
 
   def setup
     load_config
-    # Postal.options[:proxy] = "http://localhost:8888/"
+    Postal.options[:list_name] = 'active-casting'
+    Postal.options[:proxy] = "http://localhost:8888/"
   end
   
   def test_selecting_all_content
@@ -15,7 +16,7 @@ class ContentTest < Test::Unit::TestCase
   end
   
   def test_finding_content_by_filter
-    assert_not_nil = Postal::Content.find_by_filter("ContentID = 3234")
+    assert_not_nil content = Postal::Content.find_by_filter()
   end
   
 end
