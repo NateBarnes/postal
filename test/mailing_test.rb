@@ -60,20 +60,13 @@ class MailingTest < Test::Unit::TestCase
   
   def test_can_import_content
     assert mail = Postal::Mailing.import(@config['content_id'])
-    assert mail.title = @config['content_title']
+    assert_equal @config['content_subject'], mail.subject
   end
   
   def test_can_send_mailing_from_import
     content = Postal::Mailing.import(@config['content_id'])
-    # this simple call SHOULD work
     mailing = Postal::Mailing.new(:to => @config['email_in_list'],
                                   :mailing => content)
-    #puts content.title
-    #mailing = Postal::Mailing.new(:to => @config['email_in_list'],
-    #                              :html_message => content.htmlMessage,
-    #                              :subject => content.subject,
-    #                              :from => content.from)
-    puts mailing.to
     assert mailing.valid?
     assert mailing.send!
   end
