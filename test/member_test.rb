@@ -40,6 +40,7 @@ class MemberTest < Test::Unit::TestCase
   def test_can_update_user_demographics_after_creation
     new_member = Postal::Member.create(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe")
     assert new_member.update_attributes(:field_0 => 'Baseball')
+    assert updated_user = Postal::Member.find(new_member.email)
   end
   
   def test_can_create_user_and_demographics_at_creation
@@ -79,11 +80,18 @@ class MemberTest < Test::Unit::TestCase
     assert !Postal::Member.find(new_member.email)
   end
   
-  def test_can_create_find_and_update_member
+  def test_can_create_find_and_update_member_by_filter
     Postal::Member.create(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe")
     assert member = Postal::Member.find_by_filter('EmailAddress like john.doe%')
     assert member.update_attributes(:field_0 => 'Baseball')
     assert_equal Postal::Member.find_by_filter('EmailAddress like john.doe%').demographics[:field_0], 'Baseball'
+  end
+  
+  def test_can_create_find_and_update_member_by_id
+    new_member = Postal::Member.create(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe")
+    assert member = Postal::Member.find(new_member.id)
+    assert member.update_attributes(:field_0 => 'Baseball')
+    assert_equal Postal::Member.find(new_member.email).demographics[:field_0], 'Baseball'
   end
   
 end

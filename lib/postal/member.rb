@@ -8,16 +8,7 @@ module Postal
           args << "ListName=#{Postal.options[:list_name]}"
         end
         if soap_members = Postal.driver.selectMembers(args)
-          members = soap_members.collect do |member|
-            demographics = {}
-            member.demographics.each { |demo| demographics.merge!({ demo.name.to_sym => demo.value }) }
-            Member.new(:email => member.emailAddress, :name => member.fullName, :id => member.memberID, :list_name => member.listName, :demographics => demographics)
-          end
-          if members.size == 1
-            return members.first
-          else
-            return members
-          end
+          return parse_members(soap_members)
         else
           return nil
         end
@@ -52,7 +43,8 @@ module Postal
           member_id = 0
 
           begin
-            return Postal.driver.getMemberID(Postal::Lmapi::SimpleMemberStruct.new(list_name,member_id,email))
+            return find_by_filter("EmailAddress=#{email}")
+            # return Postal.driver.getMemberID(Postal::Lmapi::SimpleMemberStruct.new(list_name,member_id,email))
           rescue SOAP::FaultError
             return nil
           end
@@ -61,7 +53,8 @@ module Postal
       
         def find_by_id(args,options)
           member_id = args.first
-          return Postal.driver.getEmailFromMemberID(member_id)
+          return find_by_filter("MemberID=#{member_id}")
+          # return Postal.driver.getEmailFromMemberID(member_id)
         end
         
       
@@ -77,6 +70,19 @@ module Postal
           end
         end
       
+        def parse_members(raw)
+          members = raw.collect do |member|
+            demographics = {}
+            member.demographics.each { |demo| demographics.merge!({ demo.name.to_sym => demo.value }) }
+            Member.new(:email => member.emailAddress, :name => member.fullName, :id => member.memberID, :list_name => member.listName, :demographics => demographics)
+          end
+          if members.size == 1
+            return members.first
+          else
+            return members
+          end
+        end
+        
     end
     
     DEFAULT_ATTRIBUTES = { :id => nil, :email => nil, :name => nil, :list_name => nil, :demographics => {} }

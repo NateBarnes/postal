@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{postal}
-  s.version = "0.2.0"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Cameron"]
-  s.date = %q{2009-11-18}
+  s.date = %q{2009-11-19}
   s.description = %q{Lyris is an enterprise email service. Postal makes it easy for Ruby to talk to Lyris's API.}
   s.email = %q{cannikinn@gmail.com}
   s.extra_rdoc_files = [
