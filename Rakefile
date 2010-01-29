@@ -7,9 +7,9 @@ begin
     gem.name = "postal"
     gem.summary = %Q{Gem for talking to the Lyris API}
     gem.description = %Q{Lyris is an enterprise email service. Postal makes it easy for Ruby to talk to Lyris's API.}
-    gem.email = "cannikinn@gmail.com"
-    gem.homepage = "http://github.com/cannikin/postal"
-    gem.authors = ["Rob Cameron"]
+    gem.email = "rob.cameron@active.com"
+    gem.homepage = "http://github.com/activenetwork/postal"
+    gem.authors = ["The Active Network"]
     gem.add_dependency('soap4r','>= 1.5.8')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
