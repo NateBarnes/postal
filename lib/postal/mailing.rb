@@ -127,13 +127,13 @@ module Postal
       if valid?
         
         # are we sending to a list of email addresses or member ids
-        case @to.to_a.first
+        case [@to].flatten.first
         when ::String
-          emails = @to.to_a
+          emails = [@to].flatten
           member_ids = []
         when ::Fixnum
           emails = []
-          member_ids = @to.to_a
+          member_ids = [@to].flatten
         end
         
         if @mailing.nil?
