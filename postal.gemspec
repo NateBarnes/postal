@@ -57,16 +57,4 @@ Gem::Specification.new do |s|
      "test/test_helper.rb"
   ]
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
-
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<soap4r>, [">= 1.5.8"])
-    else
-      s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-    end
-  else
-    s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-  end
 end
