@@ -1,4 +1,4 @@
-== Introduction
+# Introduction
 
 Postal is a gem for working with the Lyris API. "But the Lyris API is just a SOAP service, why
 don't I use something like Soap4r?" Well you could, but it wouldn't be very pretty. When the
@@ -7,7 +7,7 @@ interface is created all properties passed to a method are required and always i
 Postal does use the Soap4r interface behind the scenes but gives you a simple ActiveRecord-like
 interface for search and adding records.
 
-== Installation
+## Installation
 
 Get the gem:
 
@@ -19,7 +19,7 @@ Then to use just add the require to your script:
   require 'rubygems'
   require 'postal'
   
-== Usage
+## Usage
 
 Postal feels a lot like using ActiveRecord. You create/save new Members, find existing ones, etc.
 All of the examples below assume you've already set up Postal with your username, password and WSDL
@@ -34,12 +34,12 @@ If you don't set your list name in the options you can pass it in with each meth
 
 See the /test directory for examples of just about everything you can do with Postal.
 
-=== Lists
+### Lists
 
   # find a list based on its name
   Postal::List.find('my-list-name')
   
-=== Members
+### Members
 
   # add a member to a list (the list saved to Postal.options)
   new_member = Postal::Member.new(:email => "john.doe@anonymous.com", :name => "John Doe")
@@ -70,7 +70,7 @@ returning false.
   # delete member(s) based on filters
   Postal::Member.destroy("EmailAddress like john.doe-delete%")
   
-=== Mailings
+### Mailings
 
   # directly send an email to an array of email addresses
   mail = Postal::Mailing.new( :to => ['john.doe@anonymous.com','jane.doe@anonymous.com'], 
@@ -84,17 +84,17 @@ returning false.
 Mailings require a couple things to be valid, mainly someone to send to, a subject, and 
 the name of a list to send to. `mail.valid?` will return false if any of these do not exist.
 
-== To Do
+## To Do
 
 * Implement wrappers for remaining Lyris methods
 
-== Thanks
+## Thanks
 
 Special thanks to this article: http://markthomas.org/2007/09/12/getting-started-with-soap4r/
 Mark details how to use Soap4r (for which there is very little documentation in the world) and
 his example includes talking to Lyris! Postal probably couldn't have happened without his article.
 
-== Note on Patches/Pull Requests
+## Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -103,7 +103,6 @@ his example includes talking to Lyris! Postal probably couldn't have happened wi
 * Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Copyright
+## Copyright
 
-Copyright (c) 2009 Rob Cameron. See LICENSE for details.
-
+Copyright (c) 2009 The Active Network. See LICENSE for details.
