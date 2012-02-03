@@ -9,7 +9,8 @@ require 'postal'
 class Test::Unit::TestCase
   
   def load_config
-    @config = YAML.load(File.read('lyris.yml'))['config']
+    #@config = YAML.load(File.read('lyris.yml'))['config']
+    @config = YAML.load(File.read('/Users/cbarnes/Sites/postal/config/lyris.yml'))
     Postal.options[:wsdl] = @config['wsdl']
     Postal.options[:username] = @config['username']
     Postal.options[:password] = @config['password']

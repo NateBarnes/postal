@@ -4,7 +4,7 @@ module Postal
     class << self
       
       def import(content_id)
-        mail = Postal.driver.importContent(content_id)
+        mail = Mailing.new(Postal.driver.importContent(content_id))
         return mail
       end
       
@@ -106,17 +106,17 @@ module Postal
         @mailing = args[:mailing]
       else
         @subject = args[:mailing].subject
-        @is_html_section_encoded = args[:mailing].isHtmlSectionEncoded
-        @html_section_encoding = args[:mailing].htmlSectionEncoding
-        @html_message = args[:mailing].htmlMessage
-        @char_set_id = args[:mailing].charSetID
-        @is_text_section_encoded = args[:mailing].isTextSectionEncoded
-        @text_section_encoding = args[:mailing].textSectionEncoding
+        @is_html_section_encoded = args[:mailing].is_html_section_encoded
+        @html_section_encoding = args[:mailing].html_section_encoding
+        @html_message = args[:mailing].html_message
+        @char_set_id = args[:mailing].char_set_id
+        @is_text_section_encoded = args[:mailing].is_text_section_encoded
+        @text_section_encoding = args[:mailing].text_section_encoding
         @title = args[:mailing].title
-        @text_message = args[:mailing].textMessage
+        @text_message = args[:mailing].text_message
         @attachments = args[:mailing].attachments
         @from = args[:mailing].from
-        @additional_headers = args[:mailing].additionalHeaders
+        @additional_headers = args[:mailing].additional_headers
         @mailing = args[:mailing]
       end
     end
@@ -137,38 +137,63 @@ module Postal
         end
         
         if @mailing.nil?
-          mail = Postal::Lmapi::MailingStruct.new(:additionalHeaders => @additional_headers, 
-                                                  :attachments => @attachments, 
-                                                  :bypassModeration => @bypass_moderation, 
-                                                  :campaign => @campaign, 
-                                                  :charSetID => @char_set_id, 
-                                                  :detectHtml => @detect_html, 
-                                                  :dontAttemptAfterDate => @dont_attempt_after_date, 
-                                                  :enableRecovery => @enable_recovery, 
-                                                  :from => @from, 
-                                                  :htmlMessage => @html_message, 
-                                                  :htmlSectionEncoding => @html_section_encoding, 
-                                                  :isHtmlSectionEncoded => @is_html_section_encoded, 
-                                                  :isTextSectionEncoded => @is_text_section_encoded,
-                                                  :listName => @list_name,
-                                                  :recencyNumberOfMailings => @recency_number_of_mailings,
-                                                  :recencyWhich => @recency_which,
-                                                  :replyTo => @reply_to,
-                                                  :resendAfterDays => @resend_after_days,
-                                                  :sampleSize => @sample_size,
-                                                  :scheduledMailingDate => @scheduled_mailing_date,
-                                                  :subject => @subject,
-                                                  :textMessage => @text_message,
-                                                  :textSectionEncoding => @text_section_encoding,
-                                                  :title => @title,
-                                                  # :to => @to,
-                                                  :trackOpens => @track_opens,
-                                                  :rewriteDateWhenSent => @rewrite_date_when_sent )
+          mail = { 'AdditionalHeaders' => @additional_headers, 
+                   'Attachments' => @attachments, 
+                   'BypassModeration' => @bypass_moderation, 
+                   'Campaign' => @campaign, 
+                   'CharSetID' => @char_set_id, 
+                   'DetectHtml' => @detect_html, 
+                   'DontAttemptAfterDate' => @dont_attempt_after_date, 
+                   'EnableRecovery' => @enable_recovery, 
+                   'From' => @from, 
+                   'HtmlMessage' => @html_message, 
+                   'HtmlSectionEncoding' => @html_section_encoding, 
+                   'IsHtmlSectionEncoded' => @is_html_section_encoded, 
+                   'IsTextSectionEncoded' => @is_text_section_encoded,
+                   'ListName' => @list_name,
+                   'RecencyNumberOfMailings' => @recency_number_of_mailings,
+                   'RecencyWhich' => @recency_which,
+                   'ReplyTo' => @reply_to,
+                   'ResendAfterDays' => @resend_after_days,
+                   'SampleSize' => @sample_size,
+                   'ScheduledMailingDate' => @scheduled_mailing_date,
+                   'Subject' => @subject,
+                   'TextMessage' => @text_message,
+                   'TextSectionEncoding' => @text_section_encoding,
+                   'Title' => @title,
+                   # :to => @to,
+                   'TrackOpens' => @track_opens,
+                   'RewriteDateWhenSent' => @rewrite_date_when_sent }
         
           return Postal.driver.sendMailingDirect(emails,member_ids,mail)
         else
-          mail = Postal::Lmapi::MailingStruct.new(@mailing)
-          mail.listName = @list_name || Postal.options[:list_name]
+          mail = { 'AdditionalHeaders' => @mailing.additional_headers, 
+                   'Attachments' => @mailing.attachments, 
+                   'BypassModeration' => @mailing.bypass_moderation, 
+                   'Campaign' => @mailing.campaign, 
+                   'CharSetID' => @mailing.char_set_id, 
+                   'DetectHtml' => @mailing.detect_html, 
+                   'DontAttemptAfterDate' => @mailing.dont_attempt_after_date, 
+                   'EnableRecovery' => @mailing.enable_recovery, 
+                   'From' => @mailing.from, 
+                   'HtmlMessage' => @mailing.html_message, 
+                   'HtmlSectionEncoding' => @mailing.html_section_encoding, 
+                   'IsHtmlSectionEncoded' => @mailing.is_html_section_encoded, 
+                   'IsTextSectionEncoded' => @mailing.is_text_section_encoded,
+                   'RecencyNumberOfMailings' => @mailing.recency_number_of_mailings,
+                   'RecencyWhich' => @mailing.recency_which,
+                   'ReplyTo' => @mailing.reply_to,
+                   'ResendAfterDays' => @mailing.resend_after_days,
+                   'SampleSize' => @mailing.sample_size,
+                   'ScheduledMailingDate' => @mailing.scheduled_mailing_date,
+                   'Subject' => @mailing.subject,
+                   'TextMessage' => @mailing.text_message,
+                   'TextSectionEncoding' => @mailing.text_section_encoding,
+                   'Title' => @mailing.title,
+                   # :to => @to,
+                   'TrackOpens' => @mailing.track_opens,
+                   'RewriteDateWhenSent' => @mailing.rewrite_date_when_sent,
+                   'ListName' => @mailing.list_name || Postal.options[:list_name] }
           return Postal.driver.sendMailingDirect(emails,member_ids,mail)
         end
         

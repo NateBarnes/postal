@@ -7,22 +7,21 @@ module Postal
         unless args.find { |arg| arg.match(/ListName/) }
           args << "ListName=#{Postal.options[:list_name]}"
         end
-        if soap_contents = Postal.driver.selectContent(args)
+        if soap_contents = Postal.driver.selectContent(args)[:item]
           contents = soap_contents.collect do |content|
-            puts content.inspect
-            Content.new(:content_id => content.contentID,
-                        :date_created => content.dateCreated, 
-                        :description => content.description, 
-                        :doc_parts => content.docParts, 
-                        :doc_type => content.docType,
-                        :header_from => content.headerFrom,
-                        :header_to => content.headerTo,
-                        :is_read_only => content.isReadOnly,
-                        :is_template => content.isTemplate,
-                        :list_name => content.listName,
-                        :native_title => content.nativeTitle,
-                        :site_name => content.siteName,
-                        :title => content.title)
+            Content.new(:content_id => content[:content_id],
+                        :date_created => content[:date_created], 
+                        :description => content[:description], 
+                        :doc_parts => content[:doc_parts], 
+                        :doc_type => content[:doc_yype],
+                        :header_from => content[:header_from],
+                        :header_to => content[:header_to],
+                        :is_read_only => content[:is_read_only],
+                        :is_template => content[:is_template],
+                        :list_name => content[:list_name],
+                        :native_title => content[:native_title],
+                        :site_name => content[:site_name],
+                        :title => content[:title])
           end
           if contents.size == 1
             return contents.first

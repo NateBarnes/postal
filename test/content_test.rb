@@ -6,8 +6,8 @@ class ContentTest < Test::Unit::TestCase
 
   def setup
     load_config
-    Postal.options[:list_name] = 'active-casting'
-    Postal.options[:proxy] = "http://localhost:8888/"
+    #Postal.options[:list_name] = 'active-casting'
+    #Postal.options[:proxy] = "http://localhost:8888/"
   end
   
   def test_selecting_all_content

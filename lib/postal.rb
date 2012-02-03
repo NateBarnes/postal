@@ -4,9 +4,7 @@ $:.unshift File.dirname(__FILE__) # for use/testing when no gem is installed
 require 'logger'
 
 # internal
-require 'postal/lmapi/lmapi.rb'
 require 'postal/lmapi/lmapi_driver.rb'
-require 'postal/lmapi/lmapi_mapping_registry.rb'
 require 'postal/base'
 require 'postal/content'
 require 'postal/list'
@@ -37,9 +35,7 @@ module Postal
   # Make a driver instance available at Postal.driver
   def driver
     unless @driver
-      @driver = Postal::Lmapi::Soap.new(@options[:wsdl])
-      @driver.options['protocol.http.basic_auth'] << [@options[:wsdl], @options[:username], @options[:password]]
-      @driver.options['protocol.http.proxy'] = @options[:proxy]
+      @driver = Postal::Lmapi::Driver.new @options[:wsdl], @options[:proxy], @options[:username], @options[:password]
     end
     return @driver
   end

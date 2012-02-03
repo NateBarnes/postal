@@ -6,7 +6,7 @@ class MailingTest < Test::Unit::TestCase
 
   def setup
     load_config
-    Postal.options[:proxy] = "http://localhost:8888/"
+    #Postal.options[:proxy] = "http://localhost:8888/"
   end
   
   def test_can_send_valid_mailing

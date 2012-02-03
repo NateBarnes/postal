@@ -7,9 +7,13 @@ module Postal
         unless args.find { |arg| arg.match(/ListName/) }
           args << "ListName=#{Postal.options[:list_name]}"
         end
-        if soap_members = Postal.driver.selectMembers(args)
-          return parse_members(soap_members)
-        else
+        begin
+          if soap_members = Postal.driver.selectMembers(args)
+            return parse_members(soap_members)
+          else
+            return nil
+          end
+        rescue
           return nil
         end
       end
@@ -45,7 +49,7 @@ module Postal
           begin
             return find_by_filter("EmailAddress=#{email}")
             # return Postal.driver.getMemberID(Postal::Lmapi::SimpleMemberStruct.new(list_name,member_id,email))
-          rescue SOAP::FaultError
+          rescue Savon::SOAP::Fault => soap_fault
             return nil
           end
         end
@@ -70,17 +74,26 @@ module Postal
           end
         end
       
-        def parse_members(raw)
-          members = raw.collect do |member|
-            demographics = {}
-            member.demographics.each { |demo| demographics.merge!({ demo.name.to_sym => demo.value }) }
-            Member.new(:email => member.emailAddress, :name => member.fullName, :id => member.memberID, :list_name => member.listName, :demographics => demographics)
+        def parse_members(return_hash)
+          case return_hash[:item]
+          when Hash
+            member = build_member_from_hash(return_hash[:item])
+          when Array 
+            members = return_hash[:item].each do |member|
+              build_member_from_hash(member)
+            end
           end
-          if members.size == 1
-            return members.first
+          if member
+            return member
           else
             return members
           end
+        end
+        
+        def build_member_from_hash(member_hash)
+          demographics = {}
+          member_hash[:demographics][:item].each { |demo| demographics.merge!({ demo[:name].to_sym => demo[:value] }) }
+          Member.new(:email => member_hash[:email_address], :name => member_hash[:full_name], :id => member_hash[:member_id], :list_name => member_hash[:list_name], :demographics => demographics)
         end
         
     end
@@ -109,7 +122,7 @@ module Postal
         @id = Postal.driver.createSingleMember(@email, @name, list_name)
         update_attributes(@demographics) unless @demographics.empty?
         return @id
-      rescue SOAP::FaultError
+      rescue Savon::SOAP::Fault
         return false
       end
     end
@@ -128,9 +141,8 @@ module Postal
     # Update the demographics for a user
     def update_attributes(attributes={})
       list_name = @list_name
-      demos = attributes.collect { |key,value| Postal::Lmapi::KeyValueType.new(value,key.to_s) }
-      member = Postal::Lmapi::SimpleMemberStruct.new(list_name, @id, @email)
-      return Postal.driver.updateMemberDemographics(member,demos)
+      demos = attributes.collect { |key,value| {'Name' => key, 'Value' => value} }
+      return Postal.driver.updateMemberDemographics(list_name, @id, @email, demos)
     end
     
     

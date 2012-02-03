@@ -16,10 +16,11 @@ class MemberTest < Test::Unit::TestCase
   def test_can_create_member
     assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe").save
     assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe").save!
-    assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com").save              # create member with no name
-    assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com").save!             # create member with no name
+    assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com").save # create member with no name
+    assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com").save! # create member with
   end
-  
+
+=begin
   def test_can_create_member_with_explicit_list
     assert Postal::Member.new(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe", :list_name => @config['list_name']).save
   end
@@ -93,5 +94,6 @@ class MemberTest < Test::Unit::TestCase
     assert member.update_attributes(:field_0 => 'Baseball')
     assert_equal Postal::Member.find(new_member.email).demographics[:field_0], 'Baseball'
   end
-  
+=end
+
 end
