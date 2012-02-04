@@ -4,6 +4,8 @@ require 'savon'
 
 module Postal
   class Driver
+
+    attr_accessor :client
     
     DefaultEndpointUrl = "http://www.mymailserver.com/"
 
