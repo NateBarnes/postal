@@ -22,16 +22,19 @@ module Postal
       end
     end
     
+    
     def soap_actions
       @client.wsdl.soap_actions
     end
     
+
     def selectMembers(args)
       response = @client.request :wsdl, :select_members do |soap|
         soap.body = { "FilterCriteriaArray" => {'item' => args} }
       end
       response.to_hash[:select_members_response][:return]
     end
+
     
     def createSingleMember(email, name, list_name)
       response = @client.request :wsdl, :create_single_member do |soap|
@@ -41,6 +44,7 @@ module Postal
       end
       response.to_hash[:create_single_member_response][:return].to_i
     end
+
     
     def deleteMembers(args)
       response = @client.request :wsdl, :delete_members do |soap|
@@ -49,6 +53,17 @@ module Postal
       response.to_hash[:delete_members_response][:return].to_i
     end
     
+
+    def unsubscribe(list_name, id, email)
+      response = @client.request :wsdl, :unsubscribe do |soap|
+        soap.body = { 'SimpleMemberStructArrayIn' => { 
+                        'item' => {
+                          'ListName' => list_name,
+                          'MemberID' => id,
+                          'EmailAddress' => email }}}
+      end
+      response.to_hash[:unsubscribe_response][:return]
+    end
 
     
     def updateMemberDemographics(list_name, id, email, demographics)
@@ -62,12 +77,14 @@ module Postal
       response.to_hash[:update_member_demographics_response][:return]
     end
     
+
     def selectContent(args)
       response = @client.request :wsdl, :select_content do |soap|
         soap.body = { "FilterCriteriaArray" => {'item' => args} }
       end
       response.to_hash[:select_content_response][:return]
     end  
+
     
     def selectLists(list_name, site_name)
       response = @client.request :wsdl, :select_lists do |soap|
@@ -81,6 +98,7 @@ module Postal
       end
     end
     
+
     def importContent(content_id)
       response = @client.request :wsdl, :import_content do |soap|
         soap.body = { "ContentID" => content_id }

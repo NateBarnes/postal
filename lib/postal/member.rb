@@ -136,6 +136,12 @@ module Postal
         raise Postal::CouldNotCreateMember, 'Could not create a new member. The most likely cause is that the specified list already contains this email address.'
       end
     end
+
+
+    def unsubscribe
+      list_name = @list_name
+      return Postal.driver.unsubscribe(list_name, @id, @email)
+    end
     
     
     # Update the demographics for a user
