@@ -58,6 +58,11 @@ class MemberTest < Test::Unit::TestCase
     assert Postal::Member.find(new_member.email)
     assert Postal::Member.find(new_member.email, @config['list_name'])    # with explicit list_name
   end
+
+  def test_can_unsubscribe_member
+    new_member = Postal::Member.create(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe")
+    assert new_member.unsubscribe
+  end
   
   def test_can_find_member_by_filters
     Postal::Member.create(:email => "john.doe#{rand(1000000)}@anonymous.com", :name => "John Doe")
