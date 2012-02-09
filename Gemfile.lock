@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    postal (0.3.0)
+      savon (= 0.9.7)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -26,4 +32,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  savon
+  postal!
