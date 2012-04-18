@@ -146,7 +146,7 @@ module Postal
                    'DontAttemptAfterDate' => @dont_attempt_after_date, 
                    'EnableRecovery' => @enable_recovery, 
                    'From' => @from, 
-                   'HtmlMessage' => @html_message, 
+                   'HtmlMessage' => @html_message,
                    'HtmlSectionEncoding' => @html_section_encoding, 
                    'IsHtmlSectionEncoded' => @is_html_section_encoded, 
                    'IsTextSectionEncoded' => @is_text_section_encoded,
@@ -161,10 +161,9 @@ module Postal
                    'TextMessage' => @text_message,
                    'TextSectionEncoding' => @text_section_encoding,
                    'Title' => @title,
-                   # :to => @to,
+                   'To' => @to,
                    'TrackOpens' => @track_opens,
                    'RewriteDateWhenSent' => @rewrite_date_when_sent }
-        
           return Postal.driver.sendMailingDirect(emails,member_ids,mail)
         else
           mail = { 'AdditionalHeaders' => @mailing.additional_headers, 
@@ -190,7 +189,7 @@ module Postal
                    'TextMessage' => @mailing.text_message,
                    'TextSectionEncoding' => @mailing.text_section_encoding,
                    'Title' => @mailing.title,
-                   # :to => @to,
+                   'To' => @mailing.to,
                    'TrackOpens' => @mailing.track_opens,
                    'RewriteDateWhenSent' => @mailing.rewrite_date_when_sent,
                    'ListName' => @mailing.list_name || Postal.options[:list_name] }
